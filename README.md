@@ -167,7 +167,7 @@ async function getContactForm(formId: string) {
 
 ## License
 
-[MIT](LICENSE) © benazeerhassan1909
+[MIT](LICENSE) © multidots
 
 ## Develop & test
 

@@ -1,5 +1,5 @@
 {
-  "name": "@benazeer/sanity-plugin-contact-form",
+  "name": "@multidots/sanity-plugin-contact-form",
   "version": "1.0.0",
   "description": "Sanity plugin for contact form creation",
   "keywords": [
@@ -7,7 +7,7 @@
     "sanity-plugin"
   ],
   "license": "MIT",
-  "author": "benazeerhassan1909 <91200605+benazeerhassan1909@users.noreply.github.com>",
+  "author": "multidots",
   "sideEffects": false,
   "type": "module",
   "private": true,
