@@ -24980,14 +24980,14 @@ const formGeneralSettings = defineType({
       name: "smtpUsername",
       title: "Gmail SMTP Username",
       type: "string",
-      description: "For Gmail, use full address",
+      description: "Use full Gmail address since we use Gmail SMTP.",
       validation: (Rule) => Rule.required().email()
     },
     {
       name: "smtpPassword",
       title: "Gmail SMTP Password",
       type: "string",
-      description: "For Gmail, use an App Password",
+      description: "Use Gmail App Password since we use Gmail SMTP.",
       validation: (Rule) => Rule.required(),
       components: {
         input: PasswordInput
@@ -25255,7 +25255,8 @@ const formGeneralSettings = defineType({
               placeholder: field.showPlaceholder ? field.label : field.placeholder,
               required: field.isRequired,
               onChange: handleFileChange,
-              className: formErrors[field.name] ? "has-error" : ""
+              className: formErrors[field.name] ? "has-error" : "",
+              accept: "image/*,application/pdf"
             },
             formState[field.name] instanceof File ? "file-filled" : "file-empty"
           ),
