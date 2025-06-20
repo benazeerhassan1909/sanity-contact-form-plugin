@@ -81,6 +81,85 @@ export const CONTACT_FORM_SETTINGS_QUERY = `*[_type == "formGeneralSettings"][0]
   smtpPassword
 }`;
 ```
+## 🧩 API Routes (Next.js)
+
+Create the following file inside your Next.js app to handle form submissions and send confirmation/admin emails using Gmail via nodemailer:
+
+**File:** `src/app/api/submit-form/route.ts`
+
+---
+
+## 🔐 Environment Variables
+
+Add these to your `.env.local` in your Next.js app:
+
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+```
+
+---
+
+## 📦 React Component Setup
+
+### 1. Create `ContactFormWrapper.tsx`
+
+```tsx
+'use client';
+
+import { ContactForm } from '../sanity/plugins/sanity-plugin-contact-form';
+
+export function ContactFormWrapper({ formData }: { formData: any }) {
+  return <ContactForm formData={formData} />;
+}
+```
+
+### 2. Use in your `page.tsx`
+
+```tsx
+import { sanityFetch } from "@/sanity/lib/live";
+import { PAGE_QUERY, CONTACT_FORM_QUERY, CONTACT_FORM_SETTINGS_QUERY } from "@/sanity/lib/queries";
+import { client } from '@/sanity/lib/client';
+import { ContactFormWrapper } from '@/components/ContactFormWrapper';
+
+type RouteProps = {
+  params: Promise<{ slug: string }>;
+};
+
+const getPage = async (params: RouteProps["params"]) =>
+  sanityFetch({
+    query: PAGE_QUERY,
+    params: await params,
+  });
+
+export default async function Page({ params }: RouteProps) {
+  const { data: page } = await getPage(params);
+
+  const formId = page?.contactForm?._ref;
+  const formData = formId ? await getContactForm(formId) : null;
+
+  return (
+    <>
+      <ContactFormWrapper formData={formData} />
+    </>
+  );
+}
+
+async function getContactForm(formId: string) {
+  try {
+    const [formData, formSettings] = await Promise.all([
+      client.fetch(CONTACT_FORM_QUERY, { formId }),
+      client.fetch(CONTACT_FORM_SETTINGS_QUERY),
+    ]);
+
+    return { ...formData, settings: formSettings };
+  } catch (error) {
+    console.error("Error fetching contact form:", error);
+    throw error;
+  }
+}
+```
+
 
 ## License
 
