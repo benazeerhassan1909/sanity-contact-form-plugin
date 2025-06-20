@@ -1,5 +1,7 @@
 import {defineType} from 'sanity'
 
+import {PasswordInput} from '../components/PasswordInput'
+
 export const formGeneralSettings = defineType({
   name: 'formGeneralSettings',
   title: 'Form: General Settings',
@@ -26,6 +28,9 @@ export const formGeneralSettings = defineType({
       type: 'string',
       description: 'For Gmail, use an App Password',
       validation: (Rule) => Rule.required(),
+      components: {
+        input: PasswordInput, // custom masked input
+      },
     },
     {
       name: 'successMessage',
