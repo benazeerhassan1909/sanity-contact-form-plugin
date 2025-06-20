@@ -370,6 +370,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({formData}) => {
               onChange={handleFileChange}
               className={formErrors[field.name] ? 'has-error' : ''}
               key={formState[field.name] instanceof File ? 'file-filled' : 'file-empty'}
+              accept={'image/*,application/pdf'}
             />
             {formErrors[field.name] && (
               <div className="general-error-form">{formErrors[field.name]}</div>
