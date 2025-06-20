@@ -96,6 +96,10 @@ Add these to your `.env.local` in your Next.js app:
 ```env
 NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
 NEXT_PUBLIC_SANITY_DATASET=production
+NEXT_PUBLIC_SANITY_WRITE_TOKEN=token_generated_from_sanity_account
+
+
+NOTE:  token: process.env.NEXT_PUBLIC_SANITY_WRITE_TOKEN, should be added in client.ts for write permission to sanity for image upload process
 ```
 
 ---
