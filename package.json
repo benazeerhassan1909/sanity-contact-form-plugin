@@ -40,13 +40,17 @@
     "dev": "concurrently \"npm run build --watch\" \"npm run watch\""
   },
   "dependencies": {
-    "@sanity/incompatible-plugin": "^1.0.5"
+    "@sanity/incompatible-plugin": "^1.0.5",
+    "nodemailer": "^7.0.3",
+    "react-google-recaptcha": "^3.1.0"
   },
   "devDependencies": {
     "@sanity/pkg-utils": "^7.2.3",
     "@sanity/plugin-kit": "^4.0.19",
     "@types/next": "^8.0.7",
+    "@types/nodemailer": "^6.4.17",
     "@types/react": "^19.1.6",
+    "@types/react-google-recaptcha": "^2.1.9",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
     "eslint": "^8.57.1",

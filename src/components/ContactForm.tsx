@@ -1,6 +1,6 @@
 'use client'
-import React, { useState, useRef } from 'react'
-import ReCAPTCHA from "react-google-recaptcha"
+import React, {useRef, useState} from 'react'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 interface Field {
   label: string
@@ -36,22 +36,22 @@ interface ContactFormProps {
   }
 }
 
-export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
+export const ContactForm: React.FC<ContactFormProps> = ({formData}) => {
   const [formState, setFormState] = useState<Record<string, string | boolean | string[] | File>>({})
   const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<{ success?: boolean; message?: string }>({})
+  const [submitStatus, setSubmitStatus] = useState<{success?: boolean; message?: string}>({})
   const recaptchaRef = useRef<ReCAPTCHA>(null)
 
   const onReCAPTCHAChange = (captchaCode: string | null) => {
     if (!captchaCode) return
-    setFormState((prev) => ({ ...prev, recaptcha: captchaCode }))
+    setFormState((prev) => ({...prev, recaptcha: captchaCode}))
   }
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
-    const { name, value, checked, options } = e.target as HTMLInputElement & HTMLSelectElement
+    const {name, value, checked, options} = e.target as HTMLInputElement & HTMLSelectElement
     let finalValue: string | boolean | string[]
     const inputType = (e.target as HTMLInputElement).type
     if (inputType === 'checkbox') {
@@ -71,7 +71,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
     } else {
       finalValue = value
     }
-    setFormState((prev) => ({ ...prev, [name]: finalValue }))
+    setFormState((prev) => ({...prev, [name]: finalValue}))
   }
 
   const validateForm = () => {
@@ -121,20 +121,21 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
     return isValid
   }
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, files } = e.target
+    const {name, files} = e.target
     const file = files?.[0]
     setFormState((prev) => ({
       ...prev,
       [name]: file || '',
     }))
-    setFormErrors((prev) => ({ ...prev, [name]: '' }))
+    setFormErrors((prev) => ({...prev, [name]: ''}))
   }
 
   const resetForm = () => {
     const newState: Record<string, string | boolean | string[] | File> = {}
-    formData.fields.forEach(field => {
+    formData.fields.forEach((field) => {
       if (field.type === 'checkbox') {
-        newState[field.name] = field.checkboxOptions?.length && field.checkboxOptions.length > 1 ? [] : false
+        newState[field.name] =
+          field.checkboxOptions?.length && field.checkboxOptions.length > 1 ? [] : false
       } else if (field.type === 'select') {
         newState[field.name] = []
       } else if (field.type === 'file') {
@@ -178,23 +179,22 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
       if (formData.settings) {
         formPayload.append('settings', JSON.stringify(formData.settings))
       }
-      console.log('Submitting form with payload:', Object.fromEntries(formPayload.entries()))
-      const response = await fetch(`/api/submit-form`, {
+      const response = await fetch('/api/submit-form', {
         method: 'POST',
         body: formPayload,
       })
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Network response was not ok');
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Network response was not ok')
       }
       const result = await response.json()
       if (result.recaptchaSuccess === false)
         throw new Error('reCAPTCHA verification failed. Please try again.')
       if (formData.settings.recaptchaEnabled) {
         recaptchaRef.current?.reset()
-        setFormState(prev => {
+        setFormState((prev) => {
           // Remove 'recaptcha' from formState without assigning it
-          const rest = { ...prev }
+          const rest = {...prev}
           delete rest.recaptcha
           return rest
         })
@@ -276,7 +276,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
               <option value="" disabled>
                 {field.placeholder || `Select ${field.label}`}
               </option>
-              {field.selectOptions?.map(opt => (
+              {field.selectOptions?.map((opt) => (
                 <option key={opt} value={opt}>
                   {opt}
                 </option>
@@ -289,13 +289,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
         )
       case 'checkbox':
         return (
-            <div key={key} className={`checkbox-wrapper${formErrors[field.name] ? ' has-error-border' : ''}`}>
+          <div
+            key={key}
+            className={`checkbox-wrapper${formErrors[field.name] ? ' has-error-border' : ''}`}
+          >
             <label className="checkbox-labels">
               {field.label} {field.isRequired && <span className="required-asterisk">*</span>}
             </label>
             {help}
             {note}
-            {field.checkboxOptions?.map(opt => (
+            {field.checkboxOptions?.map((opt) => (
               <div key={opt} className="checkbox-option">
                 <input
                   type="checkbox"
@@ -312,7 +315,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
                 />
                 <label
                   htmlFor={`${field.name}-${opt}`}
-                  style={{ marginLeft: '0.25rem' }}
+                  style={{marginLeft: '0.25rem'}}
                   className="checkbox-label"
                 >
                   {opt}
@@ -323,13 +326,16 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
         )
       case 'radio':
         return (
-            <div key={key} className={`radio-wrapper${formErrors[field.name] ? ' has-error-border' : ''}`}>
+          <div
+            key={key}
+            className={`radio-wrapper${formErrors[field.name] ? ' has-error-border' : ''}`}
+          >
             <label className="radio-label">
               {field.label} {field.isRequired && <span className="required-asterisk">*</span>}
             </label>
             {help}
             {note}
-            {field.radioOptions?.map(opt => (
+            {field.radioOptions?.map((opt) => (
               <div key={opt} className="radio-option">
                 <input
                   type="radio"
@@ -340,7 +346,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
                   id={`${field.name}-${opt}`}
                   checked={(formState[field.name] as string) === opt}
                 />
-                <label htmlFor={`${field.name}-${opt}`} style={{ marginLeft: '0.25rem' }}>
+                <label htmlFor={`${field.name}-${opt}`} style={{marginLeft: '0.25rem'}}>
                   {opt}
                 </label>
               </div>
@@ -386,7 +392,7 @@ export const ContactForm: React.FC<ContactFormProps> = ({ formData }) => {
 
   return (
     <form id={formData.id} className={formData.class || ''} onSubmit={handleSubmit}>
-      {formData.showtitle && <h2 style={{ textAlign: 'center', color: 'red' }}>{formData.title}</h2>}
+      {formData.showtitle && <h2 style={{textAlign: 'center', color: 'red'}}>{formData.title}</h2>}
       {formData.fields.map(renderField)}
       {formData.settings && formData.settings.recaptchaEnabled && (
         <ReCAPTCHA

@@ -22,6 +22,7 @@ export const contactFormSchema = {
       options: {
         source: 'title',
       },
+      validation: (Rule: {required: () => void}) => Rule.required(),
     },
     {
       name: 'class',
@@ -37,7 +38,12 @@ export const contactFormSchema = {
           type: 'object',
           title: 'Field',
           fields: [
-            {name: 'label', type: 'string', title: 'Label'},
+            {
+              name: 'label',
+              type: 'string',
+              title: 'Label',
+              validation: (Rule: {required: () => void}) => Rule.required(),
+            },
             {
               name: 'type',
               type: 'string',
@@ -56,6 +62,7 @@ export const contactFormSchema = {
                 ],
                 layout: 'dropdown',
               },
+              initialValue: 'text',
             },
             {
               name: 'showPlaceholder',
@@ -79,6 +86,7 @@ export const contactFormSchema = {
               type: 'string',
               title: 'Field Name',
               description: 'Unique field name (e.g., fullName, email, phone)',
+              validation: (Rule: {required: () => void}) => Rule.required(),
             },
             {
               name: 'selectOptions',
@@ -111,6 +119,22 @@ export const contactFormSchema = {
               of: [{type: 'string'}],
               description: 'Add all available options for selection',
               hidden: ({parent}: {parent?: {type?: string}}) => parent?.type !== 'radio',
+              validation: (Rule: {
+                custom: (
+                  callback: (
+                    options: string[] | undefined,
+                    context: {parent?: {type?: string}},
+                  ) => true | string,
+                ) => void
+              }) =>
+                Rule.custom(
+                  (options: string[] | undefined, context: {parent?: {type?: string}}) => {
+                    if (context.parent?.type === 'radio' && (!options || options.length === 0)) {
+                      return 'At least one option is required for radio fields'
+                    }
+                    return true
+                  },
+                ),
             },
             {
               name: 'checkboxOptions',
@@ -119,6 +143,22 @@ export const contactFormSchema = {
               of: [{type: 'string'}],
               description: 'Add all available options for selection',
               hidden: ({parent}: {parent?: {type?: string}}) => parent?.type !== 'checkbox',
+              validation: (Rule: {
+                custom: (
+                  callback: (
+                    options: string[] | undefined,
+                    context: {parent?: {type?: string}},
+                  ) => true | string,
+                ) => void
+              }) =>
+                Rule.custom(
+                  (options: string[] | undefined, context: {parent?: {type?: string}}) => {
+                    if (context.parent?.type === 'checkbox' && (!options || options.length === 0)) {
+                      return 'At least one option is required for checkbox fields'
+                    }
+                    return true
+                  },
+                ),
             },
             {
               name: 'helpText',
@@ -139,6 +179,7 @@ export const contactFormSchema = {
           ],
         },
       ],
+      validation: (Rule: {required: () => void}) => Rule.required(),
     },
     {
       name: 'submitButtonText',

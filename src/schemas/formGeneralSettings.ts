@@ -19,7 +19,6 @@ export const formGeneralSettings = defineType({
       type: 'string',
       description: 'For Gmail, use full address',
       validation: (Rule) => Rule.required().email(),
-
     },
     {
       name: 'smtpPassword',
@@ -33,18 +32,26 @@ export const formGeneralSettings = defineType({
       title: 'Success Message',
       type: 'text',
       rows: 3,
+      validation: (Rule) => Rule.required(),
       description: 'Message displayed to the user after successful submission.',
+      initialValue: 'Thank you for your submission! We will get back to you soon.',
     },
     {
       name: 'confirmationSubject',
       title: 'Email Subject',
       type: 'string',
+      description: 'Subject line for the confirmation email sent to the admin.',
+      initialValue: 'New Submission',
+      validation: (Rule) => Rule.required(),
     },
     {
       name: 'confirmationMessage',
       title: 'Email Message',
       type: 'text',
       rows: 4,
+      description: 'Message body for the confirmation email sent to the admin.',
+      initialValue:
+        'Thank you for your submission! We have received your message and will get back to you shortly.',
     },
     {
       name: 'recaptchaEnabled',
@@ -58,38 +65,38 @@ export const formGeneralSettings = defineType({
       title: 'reCAPTCHA Site Key',
       type: 'string',
       description: 'Google reCAPTCHA site key for spam protection.',
-      hidden: ({ document }) => !document?.recaptchaEnabled,
+      hidden: ({document}) => !document?.recaptchaEnabled,
       validation: (Rule) =>
         Rule.custom((field, context) => {
           // Get the current document from context
-          const document = context.document;
+          const document = context.document
 
           // Only validate if recaptchaEnabled is true
           if (document?.recaptchaEnabled && !field) {
-            return 'Site key is required when reCAPTCHA is enabled';
+            return 'Site key is required when reCAPTCHA is enabled'
           }
 
-          return true;
-        })
+          return true
+        }),
     },
     {
       name: 'recaptchaSecretKey',
       title: 'reCAPTCHA Secret Key',
       type: 'string',
       description: 'Google reCAPTCHA secret key for server-side validation.',
-      hidden: ({ document }) => !document?.recaptchaEnabled,
+      hidden: ({document}) => !document?.recaptchaEnabled,
       validation: (Rule) =>
         Rule.custom((field, context) => {
           // Get the current document from context
-          const document = context.document;
-          
+          const document = context.document
+
           // Only validate if recaptchaEnabled is true
           if (document?.recaptchaEnabled && !field) {
-            return 'Secret key is required when reCAPTCHA is enabled';
+            return 'Secret key is required when reCAPTCHA is enabled'
           }
 
-          return true;
-        })
+          return true
+        }),
     },
   ],
   preview: {
