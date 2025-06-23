@@ -1,6 +1,6 @@
 {
   "name": "@multidots/sanity-plugin-contact-form",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Sanity plugin for contact form creation",
   "keywords": [
     "sanity",
@@ -10,9 +10,9 @@
   "author": "multidots",
   "sideEffects": false,
   "type": "module",
-  "private": true,
+  "private": false,
   "publishConfig": {
-    "access": "restricted"
+    "access": "public"
   },
   "exports": {
     ".": {
