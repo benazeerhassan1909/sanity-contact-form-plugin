@@ -1,6 +1,6 @@
 {
   "name": "@multidots/sanity-plugin-contact-form",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Sanity plugin for contact form creation",
   "keywords": [
     "sanity",
