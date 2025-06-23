@@ -1,10 +1,10 @@
-# 📬 Sanity Contact Form Plugin
+# Sanity Contact Form Plugin
 
 A customizable contact form plugin for Sanity Studio, with seamless integration in your Next.js frontend.
 
 ---
 
-## 🚀 Features
+## Features
 
 - Create multiple forms with flexible field types
 - Define global settings (admin email, reCAPTCHA, confirmation messages, etc.) via a singleton document
@@ -17,7 +17,7 @@ A customizable contact form plugin for Sanity Studio, with seamless integration 
 
 ---
 
-## ⚙️ Form Configuration
+## Form Configuration
 
 ### 1. General Settings (Singleton)
 
@@ -40,7 +40,7 @@ While creating a form in Sanity, you can:
 
 ---
 
-## 🧩 Plugin Dependencies
+## Plugin Dependencies
 
 Install required packages:
 
@@ -56,7 +56,7 @@ npm install --save-dev @types/nodemailer
 
 ---
 
-## 🔧 Plugin Installation (Studio)
+## Plugin Installation (Studio)
 
 Install the plugin in your Sanity Studio:
 
@@ -77,7 +77,7 @@ export default defineConfig({
 
 ---
 
-## 🗂️ Schema Setup
+## Schema Setup
 
 ### 1. `formGeneralSettings` Singleton
 
@@ -121,7 +121,7 @@ Update your page query to include the `contactForm` field and generate schema.
 
 ---
 
-## 📚 Sanity Queries
+## Sanity Queries
 
 Add the following to `queries.ts` in your `sanity/lib/` directory:
 
@@ -167,7 +167,7 @@ export const CONTACT_FORM_SETTINGS_QUERY = `*[_type == "formGeneralSettings"][0]
 
 ---
 
-## 🛠️ API Route (Next.js)
+##  API Route (Next.js)
 
 Create the file below in your Next.js app:  
 `src/app/api/submit-form/route.ts`
@@ -387,7 +387,7 @@ Full code is included above — no changes required.
 
 ---
 
-## 🔐 Environment Variables
+##  Environment Variables
 
 Add these to your `.env.local` in your Next.js app:
 
@@ -397,7 +397,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_WRITE_TOKEN=your_sanity_token
 ```
 
-✅ Make sure `client.ts` uses `NEXT_PUBLIC_SANITY_WRITE_TOKEN` for write permissions (e.g., file uploads):
+Make sure `client.ts` uses `NEXT_PUBLIC_SANITY_WRITE_TOKEN` for write permissions (e.g., file uploads):
 
 ```ts
 export const client = createClient({
@@ -408,7 +408,7 @@ export const client = createClient({
 
 ---
 
-## 💻 React Component Integration
+##  React Component Integration
 
 ### 1. Create the Wrapper component
 
