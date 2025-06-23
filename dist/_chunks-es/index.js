@@ -25019,10 +25019,7 @@ const formGeneralSettings = defineType({
       description: "Message body for the confirmation email sent to the admin.",
       initialValue: `Hi Admin,
 
-A new submission has been made to your form. Please check your dashboard for details.
-
-Best regards,
-Your Name`
+A new submission has been made to your form. Please check below details.`
     },
     {
       name: "recaptchaEnabled",

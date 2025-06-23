@@ -1,20 +1,10 @@
-# sanity-plugin-contact-form
-
-> This is a **Sanity Studio v3** plugin.
-
-## Installation
-
-```sh
-npm install sanity-plugin-contact-form
-```
-
-## 📬 Sanity Contact Form Plugin
+# 📬 Sanity Contact Form Plugin
 
 A customizable contact form plugin for Sanity Studio, with seamless integration in your Next.js frontend.
 
 ---
 
-### 🚀 Features
+## 🚀 Features
 
 - Create multiple forms with flexible field types
 - Define global settings (admin email, reCAPTCHA, confirmation messages, etc.) via a singleton document
@@ -22,54 +12,57 @@ A customizable contact form plugin for Sanity Studio, with seamless integration 
 - API endpoints to handle submissions and send emails
 - Field types supported: text, textarea, select, checkbox, radio, file upload, etc.
 - Google reCAPTCHA support
-- Email notifications to admin
-- Responsive design
+- Email notifications to admin using Gmail SMTP
 - Customizable success and confirmation messages
 
 ---
 
-### ⚙️ Form Configuration
+## ⚙️ Form Configuration
 
-#### 1. General Settings (Singleton)
+### 1. General Settings (Singleton)
 
 Configure the following global settings in Sanity Studio:
 
-- **Admin Email:** Recipient for form submissions
-- **Success Message:** Message shown after successful submission
-- **Confirmation Subject & Message:** For user confirmation emails
-- **reCAPTCHA Settings:** Enable/disable, set site and secret keys
+- **Admin Email**: Recipient for form submissions
+- **Gmail SMTP Settings**: Email and App password for authentication
+- **Success Message**: Message shown after successful submission
+- **Confirmation Subject & Message**: For user confirmation emails
+- **reCAPTCHA Settings**: Enable/disable, set site and secret keys
 
-#### 2. Form Creation
+### 2. Form Creation
 
 While creating a form in Sanity, you can:
 
 - Set form title and visibility
 - Add multiple field types: Text, Email, Select, Radio, Checkbox, File upload
-- Configure field-specific settings: Required, Placeholder, Help text
+- Configure field-specific settings: Required, Placeholder, Help text, Note
 - Set custom submit button text
 
 ---
 
-### 🧩 Plugin Dependencies
+## 🧩 Plugin Dependencies
 
 Install required packages:
 
-```sh
+```bash
+# Google reCAPTCHA
 npm install react-google-recaptcha
 npm install --save-dev @types/react-google-recaptcha
+
+# Nodemailer
 npm install nodemailer
 npm install --save-dev @types/nodemailer
 ```
 
 ---
 
-### 🔧 Plugin Installation (Studio)
+## 🔧 Plugin Installation (Studio)
 
 Install the plugin in your Sanity Studio:
 
-```sh
+```bash
 cd your-studio
-npm install path-to-your-plugin
+npm install sanity-plugin-contact-form
 ```
 
 Register it in `sanity.config.ts`:
@@ -84,13 +77,13 @@ export default defineConfig({
 
 ---
 
-### 🗂️ Schema Setup
+## 🗂️ Schema Setup
 
-#### 1. `formGeneralSettings` Singleton
+### 1. `formGeneralSettings` Singleton
 
-Use this structure in your `deskStructure.ts`:
+Use this structure in your `structure.ts` to make the settings document singleton:
 
-```ts
+```js
 S.listItem()
   .title('Form General Settings')
   .child(
@@ -98,7 +91,11 @@ S.listItem()
       .schemaType('formGeneralSettings')
       .documentId('form-general-settings')
   )
+```
 
+Filter out the form settings from the main document list:
+
+```js
 ...S.documentTypeListItems().filter(
   (item) =>
     item.getId() &&
@@ -106,7 +103,7 @@ S.listItem()
 ),
 ```
 
-#### 2. Page Schema Field
+### 2. Page Schema Field
 
 Add the following field to your page schema:
 
@@ -120,11 +117,11 @@ defineField({
 }),
 ```
 
-Update your page query to include the `contactForm` field.
+Update your page query to include the `contactForm` field and generate schema.
 
 ---
 
-### 📚 Sanity Queries
+## 📚 Sanity Queries
 
 Add the following to `queries.ts` in your `sanity/lib/` directory:
 
@@ -170,34 +167,36 @@ export const CONTACT_FORM_SETTINGS_QUERY = `*[_type == "formGeneralSettings"][0]
 
 ---
 
-### 🛠️ API Route (Next.js)
+## 🛠️ API Route (Next.js)
 
 Create the file below in your Next.js app:  
 `src/app/api/submit-form/route.ts`
 
-This file:
-
-- Handles form submission
-- Sends confirmation and admin emails via Gmail (using Nodemailer)
-- Uploads file attachments to Sanity
-- Verifies Google reCAPTCHA (if enabled)
-
 <details>
-<summary>Click to expand full example code</summary>
+<summary>Click to expand full code</summary>
 
 ```ts
 import { NextResponse } from 'next/server'
 import { client } from '@/sanity/lib/client'
 import nodemailer from 'nodemailer'
 
-// ... (full code as in the original content)
+// ... (uploadResume, sendEmailWithAttachment, and POST handler as in original)
 ```
 
 </details>
 
+**This file:**
+
+- Handles form submission
+- Sends confirmation and admin emails via Gmail (using Nodemailer)
+- Uploads file attachments to Sanity
+- Verifies Google reCAPTCHA (if enabled)
+
+Full code is included above — no changes required.
+
 ---
 
-### 🔐 Environment Variables
+## 🔐 Environment Variables
 
 Add these to your `.env.local` in your Next.js app:
 
@@ -207,16 +206,24 @@ NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_WRITE_TOKEN=your_sanity_token
 ```
 
-✅ Make sure `client.ts` uses `NEXT_PUBLIC_SANITY_WRITE_TOKEN` for write permissions (e.g., file uploads).
+✅ Make sure `client.ts` uses `NEXT_PUBLIC_SANITY_WRITE_TOKEN` for write permissions (e.g., file uploads):
+
+```ts
+export const client = createClient({
+  // …other code
+  token: clientEnv.NEXT_PUBLIC_SANITY_WRITE_TOKEN,
+});
+```
 
 ---
 
-### 💻 React Component Integration
+## 💻 React Component Integration
 
-#### 1. Create the Wrapper
+### 1. Create the Wrapper component
+
+`src/components/ContactFormWrapper.tsx`:
 
 ```tsx
-// ContactFormWrapper.tsx
 'use client';
 
 import { ContactForm } from '../sanity/plugins/sanity-plugin-contact-form';
@@ -226,7 +233,9 @@ export function ContactFormWrapper({ formData }: { formData: any }) {
 }
 ```
 
-#### 2. Use in Page
+### 2. Use in Page
+
+In your `page.tsx` file, render the form on the frontend:
 
 ```tsx
 import { sanityFetch } from "@/sanity/lib/live";
@@ -274,20 +283,3 @@ async function getContactForm(formId: string) {
 ---
 
 With this setup, your contact forms are completely managed in Sanity and rendered in your Next.js app with API-powered submission and email handling.
-
-
-
-## License
-
-[MIT](LICENSE) © multidots
-
-## Develop & test
-
-This plugin uses [@sanity/plugin-kit](https://github.com/sanity-io/plugin-kit)
-with default configuration for build & watch scripts.
-
-See [Testing a plugin in Sanity Studio](https://github.com/sanity-io/plugin-kit#testing-a-plugin-in-sanity-studio)
-on how to run this plugin with hotreload in the studio.
-
-
-
