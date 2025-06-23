@@ -471,6 +471,13 @@ async function getContactForm(formId: string) {
 }
 ```
 
+## Screenshots
+
+Here are some screenshots of the plugin settings:
+
+![Field Creation](/public/field-creation.png)
+
+
 ---
 
 With this setup, your contact forms are completely managed in Sanity and rendered in your Next.js app with API-powered submission and email handling.
