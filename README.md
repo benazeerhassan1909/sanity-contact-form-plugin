@@ -475,7 +475,8 @@ async function getContactForm(formId: string) {
 
 Here are some screenshots of the plugin settings:
 
-![Field Creation](public/settings_300x300.png)
+<img src="public/settings_300x300.png" alt="Field Creation" width="300" />
+
 
 ---
 
