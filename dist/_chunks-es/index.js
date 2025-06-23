@@ -1,7 +1,7 @@
 import { set, unset, defineType, definePlugin } from "sanity";
 import { jsx, jsxs, Fragment } from "react/jsx-runtime";
 import * as React from "react";
-import React__default, { useContext, useDebugValue, createElement, useRef, useMemo, forwardRef, useLayoutEffect, useEffect, createContext, useId, useInsertionEffect, useCallback, Children, isValidElement, useState, Fragment as Fragment$1, Component, useImperativeHandle, lazy, memo as memo$1, cloneElement, Suspense, useSyncExternalStore, useReducer } from "react";
+import React__default, { useDebugValue, createElement, useRef, useContext, useMemo, forwardRef, useLayoutEffect, useEffect, createContext, useId, useInsertionEffect, useCallback, Children, isValidElement, useState, Fragment as Fragment$1, Component, useImperativeHandle, lazy, memo as memo$1, cloneElement, Suspense, useSyncExternalStore, useReducer } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 const contactFormSchema = {
   name: "contactForm",
@@ -24926,35 +24926,44 @@ const TreeGroup = memo$1(function(props) {
   ] });
 });
 TreeItem.displayName = "Memo(TreeItem)";
-const PasswordInput = forwardRef(
-  function({ value, onChange }, ref) {
-    const [visible, setVisible] = useState(!1);
-    return /* @__PURE__ */ jsx(Box, { children: /* @__PURE__ */ jsxs(Flex, { align: "center", gap: 2, children: [
-      /* @__PURE__ */ jsx(
-        TextInput,
-        {
-          ref,
-          type: visible ? "text" : "password",
-          value: value || "",
-          onChange: (event) => {
-            const inputValue = event.currentTarget.value;
-            onChange(inputValue ? set(inputValue) : unset());
-          },
-          style: { flex: 1 }
+function PasswordInput({ value, onChange }) {
+  const [visible, setVisible] = useState(!1);
+  return /* @__PURE__ */ jsxs("div", { children: [
+    /* @__PURE__ */ jsx(
+      TextInput,
+      {
+        type: visible ? "text" : "password",
+        value: value || "",
+        onChange: (event) => {
+          const inputValue = event.currentTarget.value;
+          onChange(inputValue ? set(inputValue) : unset());
         }
-      ),
-      /* @__PURE__ */ jsx(
-        Button,
-        {
-          mode: "bleed",
-          text: visible ? "Hide" : "Show",
-          padding: 2,
-          onClick: () => setVisible((v2) => !v2)
-        }
-      )
-    ] }) });
-  }
-), formGeneralSettings = defineType({
+      }
+    ),
+    /* @__PURE__ */ jsxs(
+      "button",
+      {
+        type: "button",
+        onClick: () => {
+          setVisible((prev2) => !prev2);
+        },
+        style: {
+          marginTop: "5px",
+          fontSize: "12px",
+          background: "transparent",
+          border: "none",
+          color: "#0070f3",
+          cursor: "pointer"
+        },
+        children: [
+          visible ? "Hide" : "Show",
+          " Password"
+        ]
+      }
+    )
+  ] });
+}
+const formGeneralSettings = defineType({
   name: "formGeneralSettings",
   title: "Form: General Settings",
   type: "document",
@@ -25008,7 +25017,12 @@ const PasswordInput = forwardRef(
       type: "text",
       rows: 4,
       description: "Message body for the confirmation email sent to the admin.",
-      initialValue: "Thank you for your submission! We have received your message and will get back to you shortly."
+      initialValue: `Hi Admin,
+
+A new submission has been made to your form. Please check your dashboard for details.
+
+Best regards,
+Your Name`
     },
     {
       name: "recaptchaEnabled",
