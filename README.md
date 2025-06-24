@@ -38,7 +38,7 @@ While creating a form in Sanity, you can:
 - Configure field-specific settings: Required, Placeholder, Help text, Note
 - Set custom submit button text
 
-<img src="/public/settings_300x300.png" alt="Field Creation" width="300" />
+<img src="https://raw.githubusercontent.com/benazeerhassan1909/sanity-contact-form-plugin/main/public/settings_300x300.png" alt="Field Creation" width="300" />
 
 
 ---
