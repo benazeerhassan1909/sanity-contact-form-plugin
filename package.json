@@ -1,6 +1,6 @@
 {
   "name": "@multidots/sanity-plugin-contact-form",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Sanity plugin for contact form creation",
   "keywords": [
     "sanity",
@@ -69,8 +69,8 @@
   },
   "peerDependencies": {
     "react": "^19",
-    "sanity": "^3"
-  },
+    "sanity": "^3.23.0 || ^4.0.0"
+},
   "engines": {
     "node": ">=18"
   },
